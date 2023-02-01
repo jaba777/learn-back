@@ -1,16 +1,22 @@
 import express,{Request,Response, Application} from 'express';
 import { createConnection } from 'typeorm';
 import {User} from './Entities/User';
+const dotenv =require('dotenv').config();
+import parser from 'body-parser';
+
+
 
 
 const app:Application=express();
 
+app.use(parser.json())
+
 createConnection({
     type: "mysql",
-    host: "localhost",
-    username: "root",
-    password: "jaba9293709p13",
-    database: "todo",
+    host: process.env.HOST_NAME,
+    username: process.env.USER_NAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
     synchronize: true,
     logging: true,
     entities: [User]
@@ -32,6 +38,7 @@ app.post('/',(req:Request,res: Response): void=>{
    res.end();
 })
 
-app.listen(3001,(): void=>{
+app.listen(4001,(): void=>{
     console.log('server Running!');
+    console.log(process.env.HOST_NAME)
 })
