@@ -1,6 +1,7 @@
 import express,{Request,Response, Application} from 'express';
 import { createConnection } from 'typeorm';
 import {User} from './Entities/User';
+import {Posts} from './Entities/Posts';
 const dotenv =require('dotenv').config();
 import parser from 'body-parser';
 
@@ -19,7 +20,7 @@ createConnection({
     database: process.env.DB_DATABASE,
     synchronize: true,
     logging: true,
-    entities: [User]
+    entities: [User,Posts]
 })
 
 app.get('/',(req:Request,res: Response): void=>{
@@ -30,12 +31,26 @@ app.get('/',(req:Request,res: Response): void=>{
 
 app.post('/',(req:Request,res: Response): void=>{
    User.insert({
-    username: 'Jaba',
-    email: 'tskhovreba@gmail.com',
-    password: 'jaba123'
+    username: '',
+    email: '',
+    password: ''
    });
 
    res.end();
+})
+
+app.get('/posts',(req:Request,res:Response)=>{
+    Posts.find().then((data)=>{
+        res.json(data)
+    })
+})
+
+app.post('/posts',(req:Request,res:Response)=>{
+    Posts.insert({
+        title:'',
+        desc: '',
+        uid: undefined
+    })
 })
 
 app.listen(4001,(): void=>{
