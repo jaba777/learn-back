@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm"
-import {Posts} from './Posts';
 
-@Entity({name: 'users'})
+
+@Entity({name: 'client'})
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -19,6 +19,4 @@ export class User extends BaseEntity {
     @Column()
     password!: string;
 
-    @OneToMany(()=>Posts, (post) => post.uid)
-    posts: Posts[]
 }

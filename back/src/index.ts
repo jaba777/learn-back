@@ -1,5 +1,5 @@
 import express,{Request,Response, Application} from 'express';
-import { createConnection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import {User} from './Entities/User';
 import {Posts} from './Entities/Posts';
 const dotenv =require('dotenv').config();
@@ -12,7 +12,7 @@ const app:Application=express();
 
 app.use(parser.json())
 
-createConnection({
+const myDataSource = new DataSource({
     type: "mysql",
     host: process.env.HOST_NAME,
     username: process.env.USER_NAME,
@@ -23,37 +23,31 @@ createConnection({
     entities: [User,Posts]
 })
 
-app.get('/',(req:Request,res: Response): void=>{
-    User.find().then((data)=>{
-        res.json(data)
-    })
+myDataSource
+.initialize()
+.then(() => {
+    console.log("Data Source has been initialized!")
+})
+.catch((err) => {
+    console.error("Error during Data Source initialization:", err)
 })
 
-app.post('/',(req:Request,res: Response): void=>{
-   User.insert({
-    username: '',
-    email: '',
-    password: ''
-   });
+app.get('/users', async function(req:Request,res:Response){
 
-   res.end();
+    const users = await myDataSource.getRepository(User).find()
+    res.json(users)
+
 })
 
-app.get('/posts',(req:Request,res:Response)=>{
-    Posts.find().then((data)=>{
-        res.json(data)
-    })
+app.post("/users", async function (req: Request, res: Response) {
+    const user = await myDataSource.getRepository(User).create(req.body)
+    const results = await myDataSource.getRepository(User).save(user)
+    return res.send(results)
 })
 
-app.post('/posts',(req:Request,res:Response)=>{
-    Posts.insert({
-        title:'',
-        desc: '',
-        uid: undefined
-    })
-})
+
 
 app.listen(4001,(): void=>{
     console.log('server Running!');
-    console.log(process.env.HOST_NAME)
+   
 })
