@@ -1,6 +1,6 @@
 import React from 'react'
 import {Outlet, Navigate} from 'react-router-dom';
-import SignIn from './pages/SignIn';
+
 
 interface User{
     loggedIn: boolean;
@@ -11,11 +11,7 @@ const useAuth=()=>{
 }
 
 const ProtectRoutes = () => {
-
-    
-
-    const isAuth=useAuth();
-
+  const isAuth=useAuth();
   return isAuth ? <Outlet/> : <Navigate to='/'/>
 }
 

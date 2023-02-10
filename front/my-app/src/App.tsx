@@ -5,12 +5,16 @@ import Home from './pages/Home';
 import About from './pages/About';
 import SignIn from './pages/SignIn';
 import ProtectRoutes from './ProtectRoutes';
+import Register from './pages/Register';
 
 function App() {
+  
+
   return (
     <div className="App">
       <Routes>
         <Route path='/' element={<SignIn />} />
+        <Route path='register' element={<Register/>}/>
         <Route element={<ProtectRoutes/>}>
         <Route path='/home' element={<Home />} />
         <Route path='/about' element={<About/>} />

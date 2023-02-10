@@ -4,13 +4,14 @@ import {User} from './Entities/User';
 import {Posts} from './Entities/Posts';
 const dotenv =require('dotenv').config();
 import parser from 'body-parser';
-
+import cors from 'cors';
 
 
 
 const app:Application=express();
 
 app.use(parser.json())
+//app.use(cors())
 
 const myDataSource = new DataSource({
     type: "mysql",
