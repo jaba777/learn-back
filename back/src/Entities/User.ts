@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, IsNull,Not } from "typeorm"
 
 
 @Entity({name: 'client'})
@@ -7,16 +7,20 @@ export class User extends BaseEntity {
     id!: number;
 
     @Column({
-        unique: true
+        unique: true,
+        nullable: false
     })
     username!: string;
 
     @Column({
-        unique: true
+        unique: true,
+        nullable: false
     })
     email!: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     password!: string;
 
 }

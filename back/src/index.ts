@@ -1,4 +1,4 @@
-import express,{Request,Response, Application} from 'express';
+import express,{Request,Response, Application, NextFunction} from 'express';
 import { DataSource } from 'typeorm';
 import {User} from './Entities/User';
 import {Posts} from './Entities/Posts';
@@ -11,7 +11,7 @@ import cors from 'cors';
 const app:Application=express();
 
 app.use(parser.json())
-//app.use(cors())
+app.use(cors())
 
 const myDataSource = new DataSource({
     type: "mysql",
@@ -35,15 +35,21 @@ myDataSource
 
 app.get('/users', async function(req:Request,res:Response){
 
-    const users = await myDataSource.getRepository(User).find()
-    res.json(users)
-
+    
+        const users = await myDataSource.getRepository(User).find()
+        res.json(users)
 })
 
-app.post("/users", async function (req: Request, res: Response) {
-    const user = await myDataSource.getRepository(User).create(req.body)
-    const results = await myDataSource.getRepository(User).save(user)
-    return res.send(results)
+app.post("/users", async function (req: Request, res: Response,next:NextFunction) {
+    try{
+        const user = await myDataSource.getRepository(User).create(req.body)
+        const results = await myDataSource.getRepository(User).save(user)
+        return res.send(results)
+    }catch(err){
+        res.status(409).json('email or name has alrady use!')
+        next(err)
+    }
+    
 })
 
 
