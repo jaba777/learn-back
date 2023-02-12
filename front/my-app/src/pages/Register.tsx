@@ -18,17 +18,13 @@ const {register,handleSubmit,formState: { errors }} = useForm<register>({
 });
 
 
-    const submitHandler=async (event:any) =>{
-        
-
+    const submitHandler=async (event:register) =>{
         try{
            await axios.post("http://localhost:4001/users",event)
 
         }catch(err:any){
           console.log(err.response.data)
         }
-
-      
 
     }
 
