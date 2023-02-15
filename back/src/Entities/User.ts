@@ -1,10 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, IsNull,Not } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, UpdateDateColumn, CreateDateColumn } from "typeorm";
+import * as bcrypt from 'bcryptjs';
 
 
 @Entity({name: 'client'})
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id!: number;
+    id!: number | string;
 
     @Column({
         unique: true,
@@ -22,5 +23,18 @@ export class User extends BaseEntity {
         nullable: false
     })
     password!: string;
+
+    
+
+   
+    
+    hashPassword():void{
+        const salt = bcrypt.genSaltSync(12);
+        this.password=bcrypt.hashSync(this.password,salt)
+    }
+
+    checkPassword(password: string):boolean{
+        return bcrypt.compareSync(password,this.password);
+    }
 
 }

@@ -8,6 +8,7 @@ import cors from 'cors';
 
 
 
+
 const app:Application=express();
 
 app.use(parser.json())
@@ -34,21 +35,62 @@ myDataSource
 })
 
 app.get('/users', async function(req:Request,res:Response){
-
-    
         const users = await myDataSource.getRepository(User).find()
         res.json(users)
 })
 
 app.post("/users", async function (req: Request, res: Response,next:NextFunction) {
+    const {username,email,password}=req.body;
+    const user = new User();
+    user.username=username;
+    user.email=email;
+    user.password=password;
+ 
+    const userResponsitory = myDataSource.getRepository(User)
+
     try{
-        const user = await myDataSource.getRepository(User).create(req.body)
-        const results = await myDataSource.getRepository(User).save(user)
-        return res.send(results)
+        user.hashPassword()
+       await userResponsitory.save(user)
+        res.status(201).json({
+            message: 'User created!'
+        })
     }catch(err){
         res.status(409).json('email or name has alrady use!')
-        next(err)
+        
     }
+
+    
+    
+})
+
+
+app.post("/login", async function (req: Request, res: Response,next:NextFunction) {
+    
+    const {email,password} = req.body;
+
+    if(!(email && password)){
+        res.status(409).json({message: 'email & pass are required'})
+    }
+
+    const authRepo=myDataSource.getRepository(User);
+    let user:User;
+    try{
+
+        user = await authRepo.findOneOrFail({
+            where: {
+                email
+            }
+        })
+
+    }catch(err){
+        return res.status(452).json({message: 'Email incorrect'})
+    }
+
+    if(!user.checkPassword(password)){
+       return res.status(452).json({message: 'password incorrect'})
+    }
+
+    return res.status(200).json({message: 'login'})
     
 })
 

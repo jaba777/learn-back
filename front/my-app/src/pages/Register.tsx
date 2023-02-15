@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import {userSchema} from '../validations/UserValidation';
+import { string } from 'yup';
 
 type register = {
   username: string;
@@ -12,8 +13,10 @@ type register = {
 
 const Register = () => {
 
+  const [err,setErr]=useState<string>('');
 
-const {register,handleSubmit,formState: { errors }} = useForm<register>({
+
+const {register,handleSubmit,reset,formState: { errors }} = useForm<register>({
   resolver: yupResolver(userSchema)
 });
 
@@ -23,8 +26,14 @@ const {register,handleSubmit,formState: { errors }} = useForm<register>({
            await axios.post("http://localhost:4001/users",event)
 
         }catch(err:any){
-          console.log(err.response.data)
+          setErr(err.response.data)
         }
+
+       reset({
+        username: '',
+        email: '',
+        password: ''
+       })
 
     }
 
@@ -36,8 +45,9 @@ const {register,handleSubmit,formState: { errors }} = useForm<register>({
         <div className='flex flex-col'>
           <label htmlFor="username">Username:</label>
           <input type="text" className='outline-none p-1 text-black' id='username' 
+          {...register('username')} />
           
-          {...register('username')}/>
+
         </div>
 
         <p>{errors.username?.message}</p>
@@ -58,7 +68,7 @@ const {register,handleSubmit,formState: { errors }} = useForm<register>({
 
         <p>{errors.password?.message}</p>
 
-        {/*error && <p>{error}</p>*/}
+        {err && <p>{err}</p>}
 
         <div className='flex'>
           <button className='bg-slate-800	 py-1.5 px-8' onClick={handleSubmit(submitHandler)}>Register</button>
