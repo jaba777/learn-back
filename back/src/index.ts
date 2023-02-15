@@ -5,6 +5,8 @@ import {Posts} from './Entities/Posts';
 const dotenv =require('dotenv').config();
 import parser from 'body-parser';
 import cors from 'cors';
+import * as jwt from 'jsonwebtoken';
+import config from './config/config';
 
 
 
@@ -90,7 +92,12 @@ app.post("/login", async function (req: Request, res: Response,next:NextFunction
        return res.status(452).json({message: 'password incorrect'})
     }
 
-    return res.status(200).json({message: 'login'})
+
+    const token = jwt.sign(
+        {userId: user.id,username: user.username},
+        config.jwtSecret,{expiresIn: '1h'}
+    )
+    return res.status(200).json({message: 'login',token})
     
 })
 
