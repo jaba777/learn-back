@@ -1,14 +1,18 @@
-import React from 'react';
-
+import React,{useContext,useEffect} from 'react';
 import {Routes,Route} from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import SignIn from './pages/SignIn';
 import ProtectRoutes from './ProtectRoutes';
 import Register from './pages/Register';
+import {AuthContext} from './auth/AuthContext'
 
 function App() {
-  
+
+
+    
+
+ 
 
   return (
     <div className="App">

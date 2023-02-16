@@ -1,12 +1,24 @@
-import React from 'react'
+import React,{useContext,useEffect, useState} from 'react'
 import {Outlet, Navigate} from 'react-router-dom';
+import {AuthContext} from './auth/AuthContext';
+
+
 
 
 interface User{
     loggedIn: boolean;
 }
 const useAuth=()=>{
-    const user:User = {loggedIn: false};
+  const currentUser = useContext(AuthContext)
+  const [user,setUser]=useState<User>({loggedIn: false})
+
+  if(currentUser?.currentUser !== null){
+    setUser({loggedIn: true})
+  }
+
+    
+    
+
     return user && user.loggedIn
 }
 

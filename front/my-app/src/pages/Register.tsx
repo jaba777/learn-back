@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import {userSchema} from '../validations/UserValidation';
-import { string } from 'yup';
+
 
 type register = {
   username: string;

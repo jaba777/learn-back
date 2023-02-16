@@ -95,9 +95,9 @@ app.post("/login", async function (req: Request, res: Response,next:NextFunction
 
     const token = jwt.sign(
         {userId: user.id,username: user.username},
-        config.jwtSecret,{expiresIn: '1h'}
+        config.jwtSecret,{expiresIn: '1d'}
     )
-    return res.status(200).json({message: 'login',token})
+    return res.setHeader('auth',token).status(200).json({message: 'login',token,body:{username: user.username,email:user.email}});
     
 })
 
