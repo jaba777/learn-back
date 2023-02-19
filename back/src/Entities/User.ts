@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, UpdateDateColumn, CreateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm";
 import * as bcrypt from 'bcryptjs';
+
+import { Posts } from './Posts'
 
 
 @Entity({name: 'client'})
@@ -24,7 +26,6 @@ export class User extends BaseEntity {
     })
     password!: string;
 
-    
 
    
     
@@ -37,4 +38,11 @@ export class User extends BaseEntity {
         return bcrypt.compareSync(password,this.password);
     }
 
+
+    @OneToMany(() => Posts, (post)=>post.user,{cascade: true}) 
+    posts!: Posts[];  
+
+   
+
 }
+

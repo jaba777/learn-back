@@ -1,9 +1,8 @@
-import React,{useContext} from 'react'
-import {AuthContext} from '../auth/AuthContext';
+import React,{ useEffect } from 'react'
+
 
 const Home = () => {
 
-  const curent=useContext(AuthContext)
 
   return (
     <div>

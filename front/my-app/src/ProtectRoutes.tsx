@@ -1,6 +1,7 @@
-import React,{useContext,useEffect, useState} from 'react'
+import React,{useContext} from 'react'
 import {Outlet, Navigate} from 'react-router-dom';
 import {AuthContext} from './auth/AuthContext';
+
 
 
 
@@ -10,21 +11,20 @@ interface User{
 }
 const useAuth=()=>{
   const currentUser = useContext(AuthContext)
-  const [user,setUser]=useState<User>({loggedIn: false})
+  const user:User={loggedIn: false}
 
   if(currentUser?.currentUser !== null){
-    setUser({loggedIn: true})
+    user.loggedIn=true;
+  } else{
+    user.loggedIn=false;
   }
-
-    
-    
 
     return user && user.loggedIn
 }
 
 const ProtectRoutes = () => {
   const isAuth=useAuth();
-  return isAuth ? <Outlet/> : <Navigate to='/'/>
+  return isAuth ? <Outlet/>: <Navigate to='/'/>
 }
 
 export default ProtectRoutes

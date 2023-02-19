@@ -16,15 +16,17 @@ interface TodosContextProps {
   }
 
 
-export const AuthContext = createContext<TodosContextProps | null>(null);
+export const AuthContext = createContext<TodosContextProps | null | any>(null);
 
 export const AuthContextProvider = ({children}:any) => {
 
-    const printItems:any = localStorage.getItem('user');
+    const printItems:any = localStorage.getItem("user");
 
     const [currentUser, setCurrentUser] = useState(
         JSON.parse(printItems) || null
       );
+
+      
     
       const login = async (inputs:any) => {
         const res = await axios.post("http://localhost:4001/login", inputs);
@@ -33,7 +35,7 @@ export const AuthContextProvider = ({children}:any) => {
       };
     
       const logout = async (inputs:any) => {
-        await axios.post("http://localhost:4001/logout");
+       // await axios.post("http://localhost:4001/logout");
         setCurrentUser(null);
       };
 
@@ -45,7 +47,7 @@ export const AuthContextProvider = ({children}:any) => {
       }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout }}>
+    <AuthContext.Provider value={{ currentUser,login, logout }}>
       {children}
     </AuthContext.Provider>
   )

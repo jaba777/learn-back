@@ -15,7 +15,7 @@ type login = {
 
 const SignIn = () => {
 
-  const navigate=useNavigate();
+
 
   const [err,setErr]=useState<string>('');
 
@@ -33,9 +33,8 @@ const SignIn = () => {
 
     try {
       await login?.login(event)
-      //navigate('/home')
-    } catch (err) {
-      console.log(err)
+    } catch (error:any) {
+      console.log(error.response.data.message)
     }
 
     reset({
