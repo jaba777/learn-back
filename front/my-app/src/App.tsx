@@ -1,4 +1,4 @@
-import React,{useContext,useEffect} from 'react';
+import React,{useContext} from 'react';
 import {Routes,Route} from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -7,6 +7,7 @@ import ProtectRoutes from './ProtectRoutes';
 import Register from './pages/Register';
 import {AuthContext} from './auth/AuthContext';
 import WithHeader from './components/WithHeader';
+import Write from './pages/Write';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path='register' element={<Register/>}/>
         <Route element={<ProtectRoutes/>}>
         <Route path='/about' element={<About/>} />
+        <Route path='/write' element={<WithHeader><Write/></WithHeader>} />
         </Route>
         <Route path='*' element={<div>Error</div>}/>
       </Routes>

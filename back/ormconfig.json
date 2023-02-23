@@ -1,0 +1,12 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "username": "root",
+    "password": "jaba9293709p13",
+    "database": "todo",
+    "logging": true,
+    "synchronize": false,
+    "entities": ["./src/Entities/*.ts"]
+
+    
+}

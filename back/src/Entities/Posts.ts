@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity,ManyToOne } from "typeorm"
-import {User} from './User'
+import User from './User'
 
 @Entity({name: 'posts'})
-export class Posts extends BaseEntity {
+ class Posts extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
@@ -12,10 +12,9 @@ export class Posts extends BaseEntity {
     @Column()
     desc!: string;
 
-    @Column()
-    uid!: number;
-
     @ManyToOne(() => User,(post)=>post.posts) 
     user!: User;
 
 }
+
+export default Posts;

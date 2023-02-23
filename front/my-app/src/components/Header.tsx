@@ -29,6 +29,10 @@ const Header = () => {
                 {logout?.currentUser?.body.username}
             </li>
 
+            <li>
+              <Link to='/write'>write</Link>
+            </li>
+
             <li className='cursor-pointer w-16 h-16 border-solid border border-black rounded-full flex justify-center items-center 
             ease-in duration-300 hover:bg-sky-700' onClick={logoutHandler}>Logout</li>
          </ul>

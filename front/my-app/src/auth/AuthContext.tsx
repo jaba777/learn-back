@@ -11,6 +11,7 @@ import { createContext, useEffect, useState } from "react";
 interface TodosContextProps {
     login: (inputs: any)=> void;
     logout: (inputs: any) => void;
+    createPost: (inputs: any)=>void;
     currentUser: current
     
   }
@@ -39,15 +40,19 @@ export const AuthContextProvider = ({children}:any) => {
         setCurrentUser(null);
       };
 
+      const createPost=async (input:any)=>{
+         await axios.post("http://localhost:4001/posts",input)
+      }
+
       
     
       useEffect(() => {
         localStorage.setItem("user", JSON.stringify(currentUser));
-        console.log(currentUser)
+       
       }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser,login, logout }}>
+    <AuthContext.Provider value={{ currentUser,login, logout,createPost }}>
       {children}
     </AuthContext.Provider>
   )

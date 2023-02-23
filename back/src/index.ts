@@ -1,7 +1,7 @@
 import express,{Request,Response, Application, NextFunction} from 'express';
 import { DataSource } from 'typeorm';
-import {User} from './Entities/User';
-import {Posts} from './Entities/Posts';
+import User from './Entities/User';
+import Posts from './Entities/Posts';
 const dotenv =require('dotenv').config();
 import parser from 'body-parser';
 import cors from 'cors';
@@ -22,7 +22,7 @@ const myDataSource = new DataSource({
     username: process.env.USER_NAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    synchronize: true,
+    synchronize: false,
     logging: true,
     entities: [User,Posts]
 })
@@ -67,7 +67,6 @@ app.post("/users", async function (req: Request, res: Response,next:NextFunction
 
 
 app.post("/login", async function (req: Request, res: Response,next:NextFunction) {
-    
     const {email,password} = req.body;
 
     if(!(email && password)){
@@ -85,7 +84,7 @@ app.post("/login", async function (req: Request, res: Response,next:NextFunction
         })
 
     }catch(err){
-        return res.status(452).json({message: 'Email incorrect'})
+        return res.status(452).json({message: 'Email or Password is incorrect'})
     }
 
     if(!user.checkPassword(password)){
@@ -97,8 +96,36 @@ app.post("/login", async function (req: Request, res: Response,next:NextFunction
         {userId: user.id,username: user.username},
         config.jwtSecret,{expiresIn: '1d'}
     )
-    return res.setHeader('auth',token).status(200).json({message: 'login',token,body:{username: user.username,email:user.email}});
+    return res.setHeader('auth',token).status(200).json({message: 'login',token,body:{ id:user.id,username: user.username, email:user.email}});
     
+})
+
+
+app.get('/posts', async function (req: Request, res: Response,next:NextFunction){
+    const posts = await myDataSource.getRepository(Posts).find()
+        res.json(posts)
+
+})
+
+
+app.post('/posts', async function (req: Request, res: Response,next:NextFunction){
+    const {title,desc,userId} =req.body;
+    const posts = new Posts();
+    posts.title=title;
+    posts.desc=desc;
+    posts.user=userId;
+
+    const userResponsitory = myDataSource.getRepository(Posts);
+
+    try{
+        await userResponsitory.save(posts)
+        res.status(201).json({
+            message: 'post created!'
+        })
+    }catch(error){
+        res.status(409).json(error)
+    }
+
 })
 
 

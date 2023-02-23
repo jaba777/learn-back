@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import {userSchema} from '../validations/UserValidation';
+import {useNavigate} from 'react-router-dom'
 
 
 type register = {
@@ -15,6 +16,8 @@ const Register = () => {
 
   const [err,setErr]=useState<string>('');
 
+  const navigate=useNavigate()
+
 
 const {register,handleSubmit,reset,formState: { errors }} = useForm<register>({
   resolver: yupResolver(userSchema)
@@ -24,7 +27,7 @@ const {register,handleSubmit,reset,formState: { errors }} = useForm<register>({
     const submitHandler=async (event:register) =>{
         try{
            await axios.post("http://localhost:4001/users",event)
-
+           navigate('/')
         }catch(err:any){
           setErr(err.response.data)
         }
