@@ -30,6 +30,7 @@ const {register,handleSubmit,reset,formState: { errors }} = useForm<register>({
            navigate('/')
         }catch(err:any){
           setErr(err.response.data)
+          console.log(err)
         }
 
        reset({

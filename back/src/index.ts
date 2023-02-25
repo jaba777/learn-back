@@ -17,12 +17,14 @@ app.use(parser.json())
 app.use(cors())
 
 const myDataSource = new DataSource({
+    migrationsTableName: 'migration',
     type: "mysql",
+    port: 3306,
     host: process.env.HOST_NAME,
     username: process.env.USER_NAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    synchronize: false,
+    synchronize: true,
     logging: true,
     entities: [User,Posts]
 })
@@ -114,17 +116,50 @@ app.post('/posts', async function (req: Request, res: Response,next:NextFunction
     posts.title=title;
     posts.desc=desc;
     posts.user=userId;
+    posts.userId=userId;
+    
 
     const userResponsitory = myDataSource.getRepository(Posts);
 
     try{
         await userResponsitory.save(posts)
+    
         res.status(201).json({
             message: 'post created!'
         })
     }catch(error){
         res.status(409).json(error)
     }
+
+})
+
+app.put("/posts/:id", async function (req: Request, res: Response) {
+    const post:any = await myDataSource.getRepository(Posts).findOneBy({
+        id: req.params.id,
+    }) 
+    myDataSource.getRepository(Posts).merge(post, req.body)
+    const results = await myDataSource.getRepository(Posts).save(post)
+    return res.send(results)
+})
+
+
+app.delete("/posts/:id", async function (req: Request, res: Response) {
+    const results = await myDataSource.getRepository(Posts).delete(req.params.id)
+    return res.send(results)
+})
+
+app.get('/user-login',async function(req:Request,res:Response){
+
+    const userRepo= myDataSource.getRepository(User);
+
+    const userFound= await userRepo.find({
+        relations: {
+            posts: true
+        },
+    });
+
+    res.json(userFound)
+    
 
 })
 

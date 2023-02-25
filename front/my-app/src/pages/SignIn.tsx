@@ -35,6 +35,7 @@ const SignIn = () => {
       await login?.login(event)
     } catch (error:any) {
       console.log(error.response.data.message)
+      setErr(error.response.data.message)
     }
 
     reset({
@@ -68,11 +69,14 @@ const SignIn = () => {
 
           <Link to='/register' className='ease-in duration-300 text-teal-300 hover:text-teal-600'>register</Link>
 
+          <p>{err}</p>
+
           <div className='flex'>
             <button className='bg-slate-800	 py-1.5 px-8' onClick={handleSubmit(LogIn)}>Add</button>
           </div>
 
         </form>
+        
       </div>
     </div>
   )

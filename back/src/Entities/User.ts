@@ -4,7 +4,7 @@ import * as bcrypt from 'bcryptjs';
 import  Posts  from './Posts'
 
 
-@Entity({name: 'client'})
+@Entity({name: 'user'})
  class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number | string;

@@ -1,7 +1,7 @@
 import React,{useContext, useEffect,useState} from 'react'
 import { Link } from 'react-router-dom';
-import Logo from '../Img/logo.jpg';
 import {AuthContext} from '../auth/AuthContext';
+import Post from '../Img/Post.png';
 
 const Header = () => {
 
@@ -18,8 +18,9 @@ const Header = () => {
       <div className='flex justify-between items-center'>
 
         <div className='w-28 h-28'>
-            <img src={Logo} 
+           <Link to='/'> <img src={Post} 
             alt="" className='w-full h-full object-contain' />
+            </Link>
         </div>
 
         <div>

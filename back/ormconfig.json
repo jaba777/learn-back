@@ -5,7 +5,7 @@
     "password": "jaba9293709p13",
     "database": "todo",
     "logging": true,
-    "synchronize": false,
+    "synchronize": true,
     "entities": ["./src/Entities/*.ts"]
 
     

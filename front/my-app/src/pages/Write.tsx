@@ -1,7 +1,7 @@
-import React, { useEffect, useState,useContext } from 'react'
-import ReactQuill from 'react-quill'
+import React, { useState,useContext } from 'react'
 import 'react-quill/dist/quill.snow.css';
 import {AuthContext} from '../auth/AuthContext';
+import axios from 'axios';
 
 
 const Write = () => {
@@ -11,7 +11,7 @@ const Write = () => {
 
   
 
-  const [postTitle,setPostTitle]=useState<string>();
+  const [postTitle,setPostTitle]=useState<string>('');
 
   const [title,setTitle]=useState<any>();
 
@@ -19,13 +19,25 @@ const Write = () => {
     setTitle(e.currentTarget.value);
   }
 
+  const postHandler=(event:any)=>{
+    setPostTitle(event.target.value)
+  }
+
 
   const postSubmitHandler= async (event:any)=>{
     event.preventDefault();
     try{
-      
-    }catch(err){
+      await axios.post('http://localhost:4001/posts',{
+        title: title,
+        desc: postTitle,
+        userId: postCreate?.currentUser?.body.id
+      })
 
+      setPostTitle('');
+      setTitle('');
+
+    }catch(err){
+      console.log(err)
     }
   }
 
@@ -43,8 +55,11 @@ const Write = () => {
        
        onChange={titleHandler} />
       </div>
-        <div className='h-52 overflow-scroll border-solid border-2 border-stone-500 w-full'>
-            <ReactQuill theme='snow' className='h-full w-full border-none' value={postTitle} onChange={setPostTitle} />
+        <div className='h-52 border-solid border-2 border-stone-500 w-full'>
+
+            <textarea id="w3review" name="w3review"  className='h-full w-full border-none p-2'
+             onChange={postHandler}/>
+
         </div>
         
           <button type='submit' className='ease-out duration-300 text-white bg-lime-400 p-1 hover:bg-lime-600'
