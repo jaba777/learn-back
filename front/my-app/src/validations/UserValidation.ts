@@ -11,3 +11,9 @@ export const userSchema= object({
     email: string().email('Please provide a valid email address').nullable().required(),
     password: string().min(4).max(15).required(),
   });
+
+
+  export const postSchema=object({
+    title: string().nullable().required(),
+    desc: string().nullable("You can't submit empty post").max(255).required(),
+  });

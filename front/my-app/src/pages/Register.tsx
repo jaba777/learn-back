@@ -42,7 +42,7 @@ const {register,handleSubmit,reset,formState: { errors }} = useForm<register>({
     }
 
   return (
-    <div className='w-full min-h-screen bg-slate-700 flex justify-center items-center'>
+    <div className='w-full min-h-screen  flex justify-center items-center'>
     <div className='border-2 border-indigo-600 p-3.5 w-80	max-w-7xl'>
       <form className='flex flex-col gap-4 text-white' onSubmit={handleSubmit(submitHandler)}>
 

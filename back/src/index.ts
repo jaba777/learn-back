@@ -7,7 +7,7 @@ import parser from 'body-parser';
 import cors from 'cors';
 import * as jwt from 'jsonwebtoken';
 import config from './config/config';
-
+import nodemailer from 'nodemailer';
 
 
 
@@ -15,6 +15,15 @@ const app:Application=express();
 
 app.use(parser.json())
 app.use(cors())
+app.set("view engine","ejs");
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'tskhovreba777@gmail.com',
+        pass: 'jaba9293709p13'
+    }
+})
 
 const myDataSource = new DataSource({
     migrationsTableName: 'migration',
@@ -28,6 +37,8 @@ const myDataSource = new DataSource({
     logging: true,
     entities: [User,Posts]
 })
+
+const JWT_SECRET ="hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jbkj?[]]pou89ywe";
 
 myDataSource
 .initialize()
@@ -68,7 +79,7 @@ app.post("/users", async function (req: Request, res: Response,next:NextFunction
 })
 
 
-app.post("/login", async function (req: Request, res: Response,next:NextFunction) {
+app.post("/login", async function (req: Request, res: Response) {
     const {email,password} = req.body;
 
     if(!(email && password)){
@@ -164,6 +175,55 @@ app.get('/user-login',async function(req:Request,res:Response){
 })
 
 
+app.post('/forgot-password',async function(req:Request,res:Response){
+  const {email}=req.body;
+  const authRepo=myDataSource.getRepository(User);
+ 
+  if(!email){
+    res.status(401).json({message: 'enter your email'});
+  }
+
+  try {
+    const userfind:any=await authRepo.findOne({where: {email: email}});
+    console.log('userfined',userfind)
+
+    const token = jwt.sign(
+        {userId: userfind.id},
+        config.jwtSecret,{expiresIn: '120s'}
+    )
+
+    console.log('token',token)
+
+    //const setusertoken= await authRepo.findOne
+
+  } catch (error) {
+
+  }
+
+
+
+
+})
+
+/*app.get('/reset-password/:id/:token', async function(req:Request,res:Response){
+
+    const {id,token}=req.params;
+    const authRepo=myDataSource.getRepository(User)
+    const oldUse=authRepo.findOne({where: {id}});
+
+    if(!oldUse){
+        res.json({message: 'User not Exists !'})
+    }
+    try{
+
+       const verify:any = jwt.verify(token,config.jwtSecret)
+       res.render("./views/index.ejs",{email: verify.email})
+    }catch(err){
+        console.log(err)
+        res.send("Not verified!")
+    }
+
+})*/
 
 app.listen(4001,(): void=>{
     console.log('server Running!');

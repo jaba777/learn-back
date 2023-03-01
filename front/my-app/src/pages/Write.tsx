@@ -1,6 +1,6 @@
 import React, { useState,useContext } from 'react'
-import 'react-quill/dist/quill.snow.css';
 import {AuthContext} from '../auth/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -9,11 +9,12 @@ const Write = () => {
 
   const postCreate= useContext(AuthContext);
 
-  
-
   const [postTitle,setPostTitle]=useState<string>('');
 
   const [title,setTitle]=useState<any>();
+
+  const navigate = useNavigate();
+
 
   const titleHandler=(e:any)=>{
     setTitle(e.currentTarget.value);
@@ -26,6 +27,11 @@ const Write = () => {
 
   const postSubmitHandler= async (event:any)=>{
     event.preventDefault();
+
+    if(title === '' || postTitle === ''){
+      return
+    }
+
     try{
       await axios.post('http://localhost:4001/posts',{
         title: title,
@@ -33,12 +39,15 @@ const Write = () => {
         userId: postCreate?.currentUser?.body.id
       })
 
+      
       setPostTitle('');
       setTitle('');
+      navigate('/');
 
     }catch(err){
       console.log(err)
     }
+    
   }
 
 
@@ -46,18 +55,18 @@ const Write = () => {
   return (
     <div>
 
-      <div className='flex flex-col gap-2	mx-auto  mt-11 w-2/4'>
+   <div className='flex flex-col gap-2	mx-auto max-w-full	 post-write text-white'>
 
     <form onSubmit={postSubmitHandler}>
 
       <div>
-       <input type="text" placeholder='Title' className='p-2 outline-none border border-current w-full' 
+       <input type="text" placeholder='Title' className='p-2 outline-none border border-current w-full bg-inherit' 
        
        onChange={titleHandler} />
       </div>
-        <div className='h-52 border-solid border-2 border-stone-500 w-full'>
+        <div className='h-52 border-solid border-2 w-full'>
 
-            <textarea id="w3review" name="w3review"  className='h-full w-full border-none p-2'
+            <textarea id="w3review" name="w3review"  className='h-full w-full border-none p-2 bg-inherit'
              onChange={postHandler}/>
 
         </div>

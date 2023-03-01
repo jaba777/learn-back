@@ -14,7 +14,7 @@ const Header = () => {
     }
 
   return (
-    <header className='w-full bg-slate-500 text-white py-2.5 px-3.5'>
+    <header className='w-full bg-inherit text-white py-2.5 px-3.5'>
       <div className='flex justify-between items-center'>
 
         <div className='w-28 h-28'>

@@ -47,7 +47,10 @@ const Home = () => {
 
   const editIdfinder=(id:number|string)=>{
     setEditId(id)
-    setBool(true)
+    setTimeout(() => {
+      setBool(true)
+    }, 20);
+    
   }
 
   const postEditHandler= async (event:any)=>{
@@ -74,14 +77,17 @@ const Home = () => {
     <div>
 
       <div className={bool ? 'edit' : 'none'}>
-        <div className="edit-box">
+        
+      <span className='delete-postedit' onClick={()=>setBool(false)}><i className="fas fa-times"></i></span>
 
+        <div className="edit-box">
+      
           <div className='title'>
-            <input type="text" onChange={(e:any)=> setEditTitle(e.target.value)} />
+            <input type="text" onChange={(e:any)=> setEditTitle(e.target.value)} placeholder='Title' />
           </div>
 
           <div className="desc">
-           <textarea id="w3review" name="w3review"  className='desc-area' onChange={(e:any)=> setEditDesc(e.target.value)}/>
+           <textarea id="w3review" name="w3review"  className='desc-area' onChange={(e:any)=> setEditDesc(e.target.value)} placeholder='Description'/>
           </div>
 
           <div className="edit-btn">
@@ -91,7 +97,7 @@ const Home = () => {
         </div>
       </div>
 
-     <div className='flex flex-col gap-3 mt-12 w-4/5 mx-auto'>
+     <div className='flex flex-col gap-3 mt-12 w-4/5 mx-auto text-white'>
         {postsState.map((item:any,index:number)=> (
          <div key={index} className='border-solid border border-gray-600 p-3 flex justify-between gap-4'>
           <div className='w-9/12'>

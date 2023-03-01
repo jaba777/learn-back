@@ -8,6 +8,8 @@ import Register from './pages/Register';
 import {AuthContext} from './auth/AuthContext';
 import WithHeader from './components/WithHeader';
 import Write from './pages/Write';
+import ForgotPassword from './pages/ForgotPassword';
+
 import './app.scss';
 
 function App() {
@@ -21,7 +23,8 @@ function App() {
     <div className="App">
       <Routes>
         { currentUser?.currentUser!==null ? <Route path='/' element={<WithHeader><Home /></WithHeader>} /> : <Route path='/' element={<SignIn />} />}
-        <Route path='register' element={<Register/>}/>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/forgot-password' element={<ForgotPassword/>} />
         <Route element={<ProtectRoutes/>}>
         <Route path='/about' element={<WithHeader><About/></WithHeader>} />
         <Route path='/write' element={<WithHeader><Write/></WithHeader>} />

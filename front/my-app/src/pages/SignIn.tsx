@@ -1,5 +1,5 @@
 import { useContext,useState } from 'react';
-import {Link,useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {AuthContext} from '../auth/AuthContext';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -16,6 +16,7 @@ type login = {
 const SignIn = () => {
 
 
+  const [forgetPass,setForgetPass]=useState<boolean>(false);
 
   const [err,setErr]=useState<string>('');
 
@@ -36,6 +37,7 @@ const SignIn = () => {
     } catch (error:any) {
       console.log(error.response.data.message)
       setErr(error.response.data.message)
+      setForgetPass(true)
     }
 
     reset({
@@ -47,7 +49,7 @@ const SignIn = () => {
 
 
   return (
-    <div className='w-full min-h-screen bg-slate-700 flex justify-center items-center'>
+    <div className='w-full h-screen	 flex justify-center items-center'>
       <div className='border-2 border-indigo-600 p-3.5 w-80	max-w-7xl'>
         <form className='flex flex-col gap-4 text-white' onSubmit={handleSubmit(LogIn)}>
           <div className='flex flex-col'>
@@ -69,6 +71,8 @@ const SignIn = () => {
 
           <Link to='/register' className='ease-in duration-300 text-teal-300 hover:text-teal-600'>register</Link>
 
+         { forgetPass && <Link to='/forgot-password' className='ease-in duration-300 text-teal-300 hover:text-teal-600'>Forgot password?</Link>}
+          
           <p>{err}</p>
 
           <div className='flex'>
